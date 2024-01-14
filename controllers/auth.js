@@ -16,11 +16,13 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({ mobile });
 
         if (!user) {
-            return res.json({ error: 'wrong mobilenumber' });
+            const message = "wrong mobilenumber";
+            return res.json({ message });
         }
 
         if (!bcrypt.compareSync(password, user.password)) {
-            return res.json({error: 'wrong password' });
+            const message = "wrong password";
+            return res.json({password });
         }
 
         const token = jwt.sign({ id: user._id }, SecretKey, { expiresIn: '7d' });
