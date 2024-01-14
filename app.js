@@ -63,6 +63,10 @@ db();
 const authRoutes = require('./controllers/auth');
 app.use('/auth', authRoutes);
 
+app.get("/", (req,res) => {
+    res.send("server is working");
+});
+
 const port = 3000;
 app.listen(port, () => {
     console.log(`app is running at port number ${port}`);
