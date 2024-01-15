@@ -45,6 +45,7 @@ router.put('/updateprofile', async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
+    console.log(user);
     user.name = req.body.name || user.name;
     user.age = req.body.age || user.age;
     user.gender = req.body.gender || user.gender;
@@ -52,6 +53,7 @@ router.put('/updateprofile', async (req, res) => {
     user.studyingIn = req.body.studyingIn || user.studyingIn;
     user.bio = req.body.bio || user.bio;
     if (req.file) {
+      console.log(req.file);
       const result = await cloudinary.uploader.upload(req.file.path);
       console.log("result");
       user.profileImage = result.secure_url;
