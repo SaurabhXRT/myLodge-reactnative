@@ -46,6 +46,7 @@ router.put('/updateprofile', async (req, res) => {
     user.studyingIn = req.body.studyingIn || user.studyingIn;
     user.bio = req.body.bio || user.bio;
     await user.save();
+    const profileupdated = "profile updated";
     res.json({profileupdated });
   } catch (error) {
     console.error('Error updating user profile:', error);
