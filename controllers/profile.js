@@ -4,6 +4,8 @@ const router = express.Router();
 const authMiddleware = require('../middleware/auth');
 const cloudinary = require("cloudinary").v2;
 const User = require('../models/user');
+const cors = require('cors');
+app.use(cors());
 
 cloudinary.config({
   cloud_name: "dar4ws6v6",
