@@ -53,7 +53,7 @@ router.put('/updateprofile', async (req, res) => {
     user.bio = req.body.bio || user.bio;
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path);
-      console.log(result");
+      console.log("result");
       user.profileImage = result.secure_url;
       fs.unlinkSync(req.file.path);
     }
