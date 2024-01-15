@@ -4,6 +4,8 @@ const app = express();
 const bodyParser = require('body-parser');
 // const bcrypt = require('bcrypt');
 // const User = require('./models/user');
+const cors = require('cors');
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
