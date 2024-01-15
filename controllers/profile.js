@@ -56,13 +56,13 @@ router.put('/updateprofile', async (req, res) => {
     user.studyingIn = req.body.studyingIn || user.studyingIn;
     user.bio = req.body.bio || user.bio;
     //user.profileImage = req.body.profileImage || user.profileImage;
-    if (req.file) {
-      console.log(req.file);
-      const result = await cloudinary.uploader.upload(req.file.path);
+   
+      //console.log(req.file);
+      const result = await cloudinary.uploader.upload(req.body.profileImage);
       console.log("result");
-      user.profileImage = result.secure_url;
-      fs.unlinkSync(req.file.path);
-    }
+      user.profileImage = result.secure_url || user.profileImage;
+     // fs.unlinkSync(req.file.path);
+    
     await user.save();
     res.json({
       name: user.name,
