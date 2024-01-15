@@ -8,11 +8,11 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 
-cloudinary.config({
-  cloud_name: "dar4ws6v6",
-  api_key: "131471632671278",
-  api_secret: "d0UW2ogmMnEEMcNVcDpzG33HKkY",
-});
+// cloudinary.config({
+//   cloud_name: "dar4ws6v6",
+//   api_key: "131471632671278",
+//   api_secret: "d0UW2ogmMnEEMcNVcDpzG33HKkY",
+// });
 
 
 router.use(authMiddleware);
@@ -55,13 +55,14 @@ router.put('/updateprofile', async (req, res) => {
     user.address = req.body.address || user.address;
     user.studyingIn = req.body.studyingIn || user.studyingIn;
     user.bio = req.body.bio || user.bio;
-    if (req.file) {
-      console.log(req.file);
-      const result = await cloudinary.uploader.upload(req.file.path);
-      console.log("result");
-      user.profileImage = result.secure_url;
-      fs.unlinkSync(req.file.path);
-    }
+    user.profileImage = req.body.profileImage || user.profileImage;
+    // if (req.file) {
+    //   console.log(req.file);
+    //   const result = await cloudinary.uploader.upload(req.file.path);
+    //   console.log("result");
+    //   user.profileImage = result.secure_url;
+    //   fs.unlinkSync(req.file.path);
+    // }
     await user.save();
     res.json({
       name: user.name,
