@@ -62,6 +62,9 @@ db();
 
 const authRoutes = require('./controllers/auth');
 app.use('/auth', authRoutes);
+const profileRoutes = require('./controllers/profile');
+app.use('/profile', profileRoutes);
+
 
 app.get("/", (req,res) => {
     res.send("server is working");
