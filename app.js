@@ -66,6 +66,8 @@ const authRoutes = require('./controllers/auth');
 app.use('/auth', authRoutes);
 const profileRoutes = require('./controllers/profile');
 app.use('/profile', profileRoutes);
+const adminRoutes = require('./controllers/admin');
+app.use('/admin', adminRoutes);
 
 
 app.get("/", (req,res) => {
