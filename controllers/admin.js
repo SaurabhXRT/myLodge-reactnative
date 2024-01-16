@@ -10,7 +10,7 @@ router.use(authMiddleware);
 // Get all rooms
 router.get('/filledRooms', async (req, res) => {
   try {
-    const rooms = await Room.find(isFilled: true);
+    const rooms = await Room.find({isFilled: true});
     res.json(rooms);
   } catch (error) {
     console.error('Error fetching rooms:', error);
