@@ -14,6 +14,20 @@ cloudinary.config({
   api_secret: "d0UW2ogmMnEEMcNVcDpzG33HKkY",
 });
 
+const multer = require('multer');
+
+const storage = multer.diskStorage({});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb('invalid image file!', false);
+  }
+};
+const uploads = multer({ storage, fileFilter });
+
+
 
 router.use(authMiddleware);
 
@@ -41,7 +55,7 @@ router.get('/profiledata', async (req, res) => {
   }
 });
 
-router.put('/updateprofile', async (req, res) => {
+router.put('/updateprofile',uploads.single('profileImage'), async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
