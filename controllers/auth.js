@@ -26,7 +26,7 @@ router.post("/login", async (req, res) => {
         }
 
         const token = jwt.sign({  userId: user._id}, SecretKey, { expiresIn: '7d' });
-        res.json({ token });
+        res.json({ token, isAdmin: user.isAdmin });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
