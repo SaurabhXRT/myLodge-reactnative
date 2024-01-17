@@ -187,5 +187,26 @@ router.get('/fetch-payments/:roomId', async (req, res) => {
   }
 });
 
+router.delete('/delete-dues/:roomId/:dueId', async (req, res) => {
+  try {
+    const { roomId, dueId } = req.params;
+
+    const room = await Room.findById(roomId);
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+    if (dueId < 0 || dueId >= room.dues.length) {
+      return res.status(400).json({ error: 'Invalid dueId' });
+    }
+    room.dues.splice(dueId, 1);
+    await room.save();
+
+    res.json({ message: 'Due deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting due:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 module.exports = router;
