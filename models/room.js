@@ -21,6 +21,8 @@ const roomSchema = new mongoose.Schema({
       ref: 'User',
     },
   ],
+  payment: String,
+  dues: String,
 });
 
 const Room = mongoose.model('Room', roomSchema);
