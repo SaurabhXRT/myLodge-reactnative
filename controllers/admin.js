@@ -153,5 +153,20 @@ router.post("/add-dues",async (req,res) => {
   }
 });
 
+router.get("/fetch-dues", async(req,res) => {
+  try{
+    const roomId = req.body;
+    const room = await Room.findById(roomId);
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+    const roomdues = room.dues;
+    res.json(roomdues);
+    
+  }catch(error){
+    console.error('Error finding dues:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
 
 module.exports = router;
