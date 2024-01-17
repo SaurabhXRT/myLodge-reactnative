@@ -29,33 +29,44 @@ router.get('/vacantrooms', async (req, res) => {
   }
 });
 
-// Allot room to a student
 router.post('/allot-room', async (req, res) => {
   try {
-    const { roomId, studentId, dateJoined } = req.body;
+    const { roomId, selectedStudent, secondStudent, allotmentDate } = req.body;
 
     const room = await Room.findById(roomId);
     if (!room) {
       return res.status(404).json({ error: 'Room not found' });
     }
 
-    const student = await User.findById(studentId);
-    if (!student) {
-      return res.status(404).json({ error: 'Student not found' });
-    }
-
     if (room.isFilled) {
       return res.status(400).json({ error: 'Room is already filled' });
     }
 
+    if (room.capacity === 0) {
+      return res.status(400).json({ error: 'Room is at full capacity' });
+    }
+
+    const studentsToAllot = [selectedStudent];
+    if (room.capacity === 2 && secondStudent) {
+      studentsToAllot.push(secondStudent);
+      room.capacity = 0; // Reduce capacity to 0 if two students are selected
+    } else {
+      room.capacity = 1; // Reduce capacity to 1 if only one student is selected
+    }
+
     room.isFilled = true;
-    room.students.push(studentId);
+    room.students = studentsToAllot;
     await room.save();
 
-    // Update student's room details
-    student.room = roomId;
-    student.dateJoined = dateJoined;
-    await student.save();
+    // Update students' room details
+    for (const studentId of studentsToAllot) {
+      const student = await User.findById(studentId);
+      if (student) {
+        student.room = roomId;
+        student.dateJoined = allotmentDate;
+        await student.save();
+      }
+    }
 
     res.json({ message: 'Room allotted successfully' });
   } catch (error) {
@@ -63,6 +74,7 @@ router.post('/allot-room', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 router.get('/students', async (req, res) => {
   try {
     const students = await User.find({ room: null }); 
