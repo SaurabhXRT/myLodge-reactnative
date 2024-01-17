@@ -191,15 +191,23 @@ router.delete('/delete-dues/:roomId/:dueId', async (req, res) => {
   try {
     const { roomId, dueId } = req.params;
 
-    const room = await Room.findById(roomId);
+    const room = await Room.findById(roomId).populate('students');
     if (!room) {
       return res.status(404).json({ error: 'Room not found' });
     }
     if (dueId < 0 || dueId >= room.dues.length) {
       return res.status(400).json({ error: 'Invalid dueId' });
     }
+    const dueMessage = room.dues[dueId];
     room.dues.splice(dueId, 1);
     await room.save();
+    for (const student of room.students) {
+      const dueIndex = student.dues.indexOf(dueMessage);
+      if (dueIndex !== -1) {
+        student.dues.splice(dueIndex, 1);
+        await student.save();
+      }
+    }
 
     res.json({ message: 'Due deleted successfully' });
   } catch (error) {
