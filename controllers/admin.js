@@ -49,9 +49,11 @@ router.post('/allot-room', async (req, res) => {
     const studentsToAllot = [selectedStudent];
     if (room.capacity === 2 && secondStudent) {
       studentsToAllot.push(secondStudent);
-      room.capacity = 0; // Reduce capacity to 0 if two students are selected
+      room.capacity = 0; 
+    } else if(room.capacity === 1  && selectedStudent) {
+      room.capacity = 0; 
     } else {
-      room.capacity = 1; // Reduce capacity to 1 if only one student is selected
+      room.capacity = 1;
     }
 
     room.isFilled = true;
