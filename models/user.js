@@ -17,6 +17,14 @@ const userSchema = new mongoose.Schema({
   profileImage: String,
   room: { type: mongoose.Schema.Types.ObjectId, ref: 'Room', default: null }, 
   dateJoined: { type: Date, default: null }, 
+  payment: {
+    type:  String,
+    default: 0,
+  },
+  dues: {
+    type:  String,
+    default: 0,
+  },
 });
 
 userSchema.methods.generateAuthToken = async function () {
