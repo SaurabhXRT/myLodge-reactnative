@@ -54,10 +54,10 @@ router.post('/allot-room', async (req, res) => {
       await room.save();
     } else if(room.capacity === 1) {
       room.capacity = 0; 
-      room.students.push(studentsToAllot);
+      room.students = room.students.concat(studentsToAllot);
       await room.save();
     } else {
-      room.students.push(studentsToAllot);
+      room.students = studentsToAllot;
       await room.save();
       room.capacity = 1;
     }
