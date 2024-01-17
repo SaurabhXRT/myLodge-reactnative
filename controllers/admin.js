@@ -54,7 +54,7 @@ router.post('/allot-room', async (req, res) => {
       await room.save();
     } else if(room.capacity === 1) {
       room.capacity = 0; 
-      room.students = room.students.concat(studentsToAllot);
+      room.students.push(studentsToAllot);
       await room.save();
     } else {
       room.students = studentsToAllot;
@@ -107,6 +107,30 @@ router.get('/students/:studentId', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+router.post('/make-payment', async (req, res) => {
+  try {
+    const { roomId, message } = req.body;
+
+    const room = await Room.findById(roomId).populate('students');
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+    room.payment.push(message);
+    await room.save();
+
+    for (const student of room.students) {
+      student.payment.push(message);
+      await student.save();
+    }
+
+    res.json({ message: 'Payment successful' });
+  } catch (error) {
+    console.error('Error making payment:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 module.exports = router;
