@@ -50,15 +50,20 @@ router.post('/allot-room', async (req, res) => {
     if (room.capacity === 2 && secondStudent) {
       studentsToAllot.push(secondStudent);
       room.capacity = 0; 
-    } else if(room.capacity === 1  && selectedStudent) {
+      room.students = studentsToAllot;
+      await room.save();
+    } else if(room.capacity === 1) {
       room.capacity = 0; 
+      room.students = studentsToAllot;
+      await room.save();
     } else {
+      room.students = studentsToAllot;
+      await room.save();
       room.capacity = 1;
     }
 
     room.isFilled = true;
-    room.students = studentsToAllot;
-    await room.save();
+  
 
     // Update students' room details
     for (const studentId of studentsToAllot) {
