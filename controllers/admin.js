@@ -167,6 +167,6 @@ router.get("/fetch-dues", async(req,res) => {
     console.error('Error finding dues:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-}
+});
 
 module.exports = router;
