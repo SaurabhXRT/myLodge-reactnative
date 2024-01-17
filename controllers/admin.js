@@ -130,7 +130,28 @@ router.post('/make-payment', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+router.post("/add-dues",async (req,res) => {
+    try {
+    const { roomId, message } = req.body;
 
+    const room = await Room.findById(roomId).populate('students');
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+    room.dues.push(message);
+    await room.save();
+
+    for (const student of room.students) {
+      student.dues.push(message);
+      await student.save();
+    }
+
+    res.json({ message: 'dues addedd successful' });
+  } catch (error) {
+    console.error('Error adding dues:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 module.exports = router;
