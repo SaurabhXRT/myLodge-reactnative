@@ -21,7 +21,7 @@ router.get('/filledRooms', async (req, res) => {
 // Get vacant rooms
 router.get('/vacantrooms', async (req, res) => {
   try {
-    const vacantRooms = await Room.find({ isFilled: false, isFilled: true,  capacity: { $gt: 0 }});
+    const vacantRooms = await Room.find({   capacity: { $gt: 0 }});
     res.json(vacantRooms);
   } catch (error) {
     console.error('Error fetching vacant rooms:', error);
