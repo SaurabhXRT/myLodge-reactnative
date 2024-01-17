@@ -87,4 +87,15 @@ router.get('/students', async (req, res) => {
   }
 });
 
+router.get('/students/:studentId', async (req, res) => {
+  try {
+    const studentid = req.params;
+    const students = await User.find({ _id:studentid }); 
+    res.json(students);
+  } catch (error) {
+    console.error('Error fetching students:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 module.exports = router;
