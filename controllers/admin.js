@@ -38,9 +38,9 @@ router.post('/allot-room', async (req, res) => {
       return res.status(404).json({ error: 'Room not found' });
     }
 
-    if (room.isFilled) {
-      return res.status(400).json({ error: 'Room is already filled' });
-    }
+    // if (room.isFilled) {
+    //   return res.status(400).json({ error: 'Room is already filled' });
+    // }
 
     if (room.capacity === 0) {
       return res.status(400).json({ error: 'Room is at full capacity' });
