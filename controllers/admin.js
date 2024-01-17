@@ -89,13 +89,19 @@ router.get('/students', async (req, res) => {
 
 router.get('/students/:studentId', async (req, res) => {
   try {
-    const studentid = req.params;
-    const students = await User.find({ _id:studentid }); 
-    res.json(students);
+    const { studentId } = req.params; 
+    const student = await User.findById(studentId);
+    
+    if (!student) {
+      return res.status(404).json({ error: 'Student not found' });
+    }
+
+    res.json(student);
   } catch (error) {
-    console.error('Error fetching students:', error);
+    console.error('Error fetching student:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 module.exports = router;
