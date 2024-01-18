@@ -75,8 +75,14 @@ router.post('/posts',uploads.single('image'), async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
     const createdBy = userId;
+    const result = await cloudinary.uploader.upload(req.file.path);
+    console.log("result");
 
-    const post = new Post({ text, image, createdBy });
+    const post = new Post({
+      text,
+      image: result.secure_url,
+      createdBy 
+    });
     await post.save();
 
     res.json(post);
