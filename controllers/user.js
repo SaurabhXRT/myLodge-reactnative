@@ -66,9 +66,9 @@ router.get('/fetch-payments', async (req, res) => {
   }
 });
 
-router.post('/posts', async (req, res) => {
+router.post('/posts',uploads.single('image'), async (req, res) => {
   try {
-    const { text, image } = req.body;
+    const text = req.body;
     const createdBy = req.user._id;
 
     const post = new Post({ text, image, createdBy });
