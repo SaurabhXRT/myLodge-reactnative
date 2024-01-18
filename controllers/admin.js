@@ -61,8 +61,9 @@ router.post('/allot-room', async (req, res) => {
     } else {
       room.students = studentsToAllot;
       room.isFilled = true;
-      await room.save();
       room.capacity = 1;
+      await room.save();
+     
     }
 
     room.isFilled = true;
