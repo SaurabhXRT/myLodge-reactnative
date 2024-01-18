@@ -68,7 +68,7 @@ router.get('/fetch-payments', async (req, res) => {
 
 router.post('/posts',uploads.single('image'), async (req, res) => {
   try {
-    const text = req.body;
+    const text = req.body.text || 'no caption';
     const userId = req.userId;
     const user = await User.findById(userId);
     if (!user) {
