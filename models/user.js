@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
   dateJoined: { type: Date, default: null }, 
   payment: [String],
   dues: [String],
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post',
+    },
+  ],
 });
 
 userSchema.methods.generateAuthToken = async function () {
