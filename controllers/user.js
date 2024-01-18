@@ -4,6 +4,29 @@ const authMiddleware = require('../middleware/auth');
 const Room = require('../models/room');
 const User = require('../models/user');
 const Post = require('../models/posts');
+const cloudinary = require("cloudinary").v2;
+const app = express();
+const cors = require('cors');
+app.use(cors());
+
+cloudinary.config({
+  cloud_name: "dar4ws6v6",
+  api_key: "131471632671278",
+  api_secret: "d0UW2ogmMnEEMcNVcDpzG33HKkY",
+});
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype.startsWith('image')) {
+    cb(null, true);
+  } else {
+    cb('invalid image file!', false);
+  }
+};
+const uploads = multer({ storage, fileFilter });
 
 router.use(authMiddleware);
 
