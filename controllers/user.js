@@ -10,12 +10,14 @@ router.get("/fetch-dues", async (req, res) => {
   try {
     const userId = req.userId;
     const user = await User.findById(userId);
+    console.log(user);
 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     const userDues = user.dues;
+    console.log(userDues);
     res.json(userDues);
   } catch (error) {
     console.error('Error finding dues:', error);
