@@ -8,15 +8,15 @@ router.use(authMiddleware);
 
 router.get("/fetch-dues", async (req, res) => {
   try {
-    const roomId = req.params.roomId;
-    const room = await Room.findById(roomId);
-    
-    if (!room) {
-      return res.status(404).json({ error: 'Room not found' });
+    const userId = req.userId;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
 
-    const roomDues = room.dues;
-    res.json(roomDues);
+    const userDues = user.dues;
+    res.json(userDues);
   } catch (error) {
     console.error('Error finding dues:', error);
     res.status(500).json({ error: 'Internal Server Error' });
@@ -25,14 +25,14 @@ router.get("/fetch-dues", async (req, res) => {
 
 router.get('/fetch-payments', async (req, res) => {
   try {
-    const roomId = req.params.roomId;
-    const room = await Room.findById(roomId);
+    const userId = req.userId;
+    const user = await User.findById(userId);
 
-    if (!room) {
-      return res.status(404).json({ error: 'Room not found' });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-
-    const payments = room.payment;
+  
+    const payments = user.payment;
     res.json(payments);
   } catch (error) {
     console.error('Error fetching payments:', error);
