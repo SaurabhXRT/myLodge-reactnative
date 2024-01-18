@@ -68,7 +68,8 @@ const profileRoutes = require('./controllers/profile');
 app.use('/profile', profileRoutes);
 const adminRoutes = require('./controllers/admin');
 app.use('/admin', adminRoutes);
-
+const userRoutes = require('./controllers/user');
+app.use('/user', userRoutes);
 
 app.get("/", (req,res) => {
     res.send("server is working");
