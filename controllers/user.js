@@ -43,4 +43,19 @@ router.get('/fetch-payments', async (req, res) => {
   }
 });
 
+router.post('/posts', async (req, res) => {
+  try {
+    const { text, image } = req.body;
+    const createdBy = req.user._id;
+
+    const post = new Post({ text, image, createdBy });
+    await post.save();
+
+    res.json(post);
+  } catch (error) {
+    console.error('Error creating post:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 module.exports = router;
