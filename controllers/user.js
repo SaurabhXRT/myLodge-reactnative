@@ -84,6 +84,8 @@ router.post('/posts',uploads.single('image'), async (req, res) => {
       createdBy 
     });
     await post.save();
+    await.user.posts.push(post._id);
+    await user.save();
 
     res.json(post);
   } catch (error) {
