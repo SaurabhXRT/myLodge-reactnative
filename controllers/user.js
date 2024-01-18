@@ -1,4 +1,12 @@
-router.get("/fetch-dues/:roomId", async (req, res) => {
+const express = require('express');
+const router = express.Router();
+const authMiddleware = require('../middleware/auth');
+const Room = require('../models/room');
+const User = require('../models/user');
+
+router.use(authMiddleware);
+
+router.get("/fetch-dues", async (req, res) => {
   try {
     const roomId = req.params.roomId;
     const room = await Room.findById(roomId);
@@ -15,7 +23,7 @@ router.get("/fetch-dues/:roomId", async (req, res) => {
   }
 });
 
-router.get('/fetch-payments/:roomId', async (req, res) => {
+router.get('/fetch-payments', async (req, res) => {
   try {
     const roomId = req.params.roomId;
     const room = await Room.findById(roomId);
