@@ -104,4 +104,31 @@ router.get('/posts', async (req, res) => {
   }
 });
 
+router.post('/comment/:postId', auth, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.userId;
+    const { text } = req.body;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    const comment = {
+      text,
+      createdBy: userId,
+    };
+
+    post.comments.push(comment);
+    await post.save();
+
+    res.json({ message: 'Comment added successfully' });
+  } catch (error) {
+    console.error('Error commenting on post:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 module.exports = router;
