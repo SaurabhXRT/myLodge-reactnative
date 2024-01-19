@@ -104,7 +104,7 @@ router.get('/posts', async (req, res) => {
   }
 });
 
-router.post('/comment/:postId', auth, async (req, res) => {
+router.post('/comment/:postId', async (req, res) => {
   try {
     const postId = req.params.postId;
     const userId = req.userId;
@@ -129,6 +129,33 @@ router.post('/comment/:postId', auth, async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+router.post('/like/:postId', async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.userId;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+    const alreadyLikedIndex = post.likes.findIndex((id) => id.equals(userId));
+
+    if (alreadyLikedIndex !== -1) {
+      post.likes.splice(alreadyLikedIndex, 1);
+    } else {
+      post.likes.push(userId);
+    }
+
+    await post.save();
+
+    res.json({ message: 'Post like updated successfully' });
+  } catch (error) {
+    console.error('Error updating post like:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 module.exports = router;
