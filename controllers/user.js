@@ -156,6 +156,36 @@ router.post('/like/:postId', async (req, res) => {
   }
 });
 
+router.get('/comments/:postId', async (req, res) => {
+  try {
+    const postId = req.params.postId;
+
+    const post = await Post.findById(postId).populate({
+      path: 'comments.createdBy',
+      select: 'name profileImage',
+    });
+
+    if (!post) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    const comments = post.comments.map((comment) => ({
+      text: comment.text,
+      createdBy: {
+        name: comment.createdBy.name,
+        profileImage: comment.createdBy.profileImage,
+      },
+      createdAt: comment.createdAt,
+    }));
+
+    res.json(comments);
+  } catch (error) {
+    console.error('Error fetching comments:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 
 
 module.exports = router;
