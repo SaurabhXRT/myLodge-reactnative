@@ -99,7 +99,7 @@ router.post('/posts',uploads.single('image'), async (req, res) => {
 
 router.get('/posts', async (req, res) => {
   try {
-    const posts = await Post.find().populate('createdBy', 'name profileImage'); 
+    const posts = await Post.find().populate('createdBy', 'name profileImage').sort({ createdAt: -1 }); 
     res.json(posts);
   } catch (error) {
     console.error('Error fetching posts:', error);
