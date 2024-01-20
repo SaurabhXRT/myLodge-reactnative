@@ -189,6 +189,36 @@ router.get('/comments/:postId', async (req, res) => {
   }
 });
 
+router.get('/user-room-data', async (req, res) => {
+  try {
+    const userId = req.userId;
+    const user = await User.findById(userId).populate('room');
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    if (!user.room) {
+      return res.json({ message: 'User is not assigned to a room' });
+    }
+    const room = await Room.findById(user.room);
+    if (!room) {
+      return res.status(404).json({ error: 'Room not found' });
+    }
+    const roomPartners = await User.find({ room: room._id, _id: { $ne: userId } });
+    const responseData = {
+      roomNumber: room.roomNumber,
+      // roomPartners: roomPartners.map(partner => ({
+      //   name: partner.name,
+      // })),
+      roompartner: roomPartners.name;
+    };
+
+    res.json(responseData);
+  } catch (error) {
+    console.error('Error fetching room information:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 
