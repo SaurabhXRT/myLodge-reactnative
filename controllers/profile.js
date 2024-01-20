@@ -4,7 +4,7 @@ const router = express.Router();
 const authMiddleware = require('../middleware/auth');
 const cloudinary = require("cloudinary").v2;
 const User = require('../models/user');
-const Post = require('../models/Post');
+const Post = require('../models/post');
 const app = express();
 const cors = require('cors');
 app.use(cors());
