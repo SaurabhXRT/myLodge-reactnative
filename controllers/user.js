@@ -180,7 +180,7 @@ router.get('/comments/:postId', async (req, res) => {
         profileImage: comment.createdBy.profileImage,
       },
       createdAt: comment.createdAt,
-    })).sort({ createdAt: -1 });
+    }).sort({ createdAt: -1 }));
 
     res.json(comments);
   } catch (error) {
