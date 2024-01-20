@@ -4,6 +4,7 @@ const router = express.Router();
 const authMiddleware = require('../middleware/auth');
 const cloudinary = require("cloudinary").v2;
 const User = require('../models/user');
+const Post = require('../models/Post');
 const app = express();
 const cors = require('cors');
 app.use(cors());
@@ -90,6 +91,21 @@ router.put('/updateprofile',uploads.single('profileImage'), async (req, res) => 
     });
   } catch (error) {
     console.error('Error updating user profile:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
+router.get('/posts', async (req, res) => {
+  try {
+    const userId = req.userId;
+    const posts = await Post.find({ createdBy: userId })
+      .populate('createdBy', 'name profileImage')
+      .sort({ createdAt: -1 });
+    res.json(posts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
