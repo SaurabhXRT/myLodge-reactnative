@@ -206,10 +206,10 @@ router.get('/user-room-data', async (req, res) => {
     const roomPartners = await User.find({ room: room._id, _id: { $ne: userId } });
     const responseData = {
       roomNumber: room.roomNumber,
-      // roomPartners: roomPartners.map(partner => ({
-      //   name: partner.name,
-      // })),
-      roompartner: roomPartners.name,
+      roomPartners: roomPartners.map(partner => ({
+        name: partner.name,
+      })),
+      //roompartner: roomPartners.name,
     };
 
     res.json(responseData);
