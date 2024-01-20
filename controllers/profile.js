@@ -81,6 +81,7 @@ router.put('/updateprofile',uploads.single('profileImage'), async (req, res) => 
      //  console.log("result");
      //  user.profileImage = result.secure_url || user.profileImage;
      // // fs.unlinkSync(req.file.path);
+    user.profileImage = profileimage || user.profileImage;
     
     await user.save();
     res.json({
@@ -91,7 +92,7 @@ router.put('/updateprofile',uploads.single('profileImage'), async (req, res) => 
       address: user.address,
       studyingIn: user.studyingIn,
       bio: user.bio,
-      profileImage: profileimage || user.profileImage,
+      profileImage: user.profileImage,
     });
   } catch (error) {
     console.error('Error updating user profile:', error);
