@@ -71,12 +71,16 @@ router.put('/updateprofile',uploads.single('profileImage'), async (req, res) => 
     user.studyingIn = req.body.studyingIn || user.studyingIn;
     user.bio = req.body.bio || user.bio;
     //user.profileImage = req.body.profileImage || user.profileImage;
-   
-      //console.log(req.file);
+    let profileimage;
+    if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path);
-      console.log("result");
-      user.profileImage = result.secure_url || user.profileImage;
-     // fs.unlinkSync(req.file.path);
+      profileimage = result.secure_url;
+    }
+     //  //console.log(req.file);
+     //  const result = await cloudinary.uploader.upload(req.file.path);
+     //  console.log("result");
+     //  user.profileImage = result.secure_url || user.profileImage;
+     // // fs.unlinkSync(req.file.path);
     
     await user.save();
     res.json({
@@ -87,7 +91,7 @@ router.put('/updateprofile',uploads.single('profileImage'), async (req, res) => 
       address: user.address,
       studyingIn: user.studyingIn,
       bio: user.bio,
-      profileImage: user.profileImage,
+      profileImage: profileimage || user.profileImage,
     });
   } catch (error) {
     console.error('Error updating user profile:', error);
