@@ -209,7 +209,7 @@ router.get('/user-room-data', async (req, res) => {
       // roomPartners: roomPartners.map(partner => ({
       //   name: partner.name,
       // })),
-      roompartner: roomPartners.name;
+      roompartner: roomPartners.name,
     };
 
     res.json(responseData);
