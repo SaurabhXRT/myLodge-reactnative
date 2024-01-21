@@ -224,7 +224,7 @@ router.delete('/posts/:postId', async (req, res) => {
   const userId = req.userId; 
   try {
     const post = await Post.findById(postId);
-    await post.remove();
+    await post.deleteOne();
     res.json({ message: 'Post deleted successfully' });
   } catch (error) {
     console.error('Error deleting post:', error);
