@@ -219,7 +219,16 @@ router.get('/user-room-data', async (req, res) => {
   }
 });
 
-
-
-
+router.delete('/posts/:postId', async (req, res) => {
+  const { postId } = req.params;
+  const userId = req.userId; 
+  try {
+    const post = await Post.findById(postId);
+    await post.remove();
+    res.json({ message: 'Post deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 module.exports = router;
