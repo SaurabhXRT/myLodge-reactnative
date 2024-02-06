@@ -16,17 +16,18 @@ router.post("/login", async (req, res) => {
         const user = await User.findOne({ mobile });
 
         if (!user) {
-            const message = "wrong mobilenumber";
+            const message = "Wrong mobile number";
             return res.json({ message });
         }
 
         if (!bcrypt.compareSync(password, user.password)) {
-            const message = "wrong password";
-            return res.json({message });
+            const message = "Wrong password";
+            return res.json({ message });
         }
 
-        const token = jwt.sign({  userId: user._id}, SecretKey, { expiresIn: '7d' });
-        res.json({ token, isAdmin: user.isAdmin });
+        const expiresIn = 7 * 24 * 60 * 60; // 7 days in seconds
+        const token = jwt.sign({ userId: user._id }, SecretKey, { expiresIn });
+        res.json({ token, isAdmin: user.isAdmin, expiresIn });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
